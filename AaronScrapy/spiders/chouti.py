@@ -9,8 +9,10 @@ import scrapy
 class ChoutiSpider(scrapy.Spider):
     name = 'chouti' # B：然后定义一个蜘蛛名，name=“”
     allowed_domains = ['chouti.com']
-    start_urls = ['http://dig.chouti.com/'] # C：定义我们需要爬取的网址，没有网址蜘蛛肿么爬
+    start_urls = ['https://www.cnblogs.com/YK2012/default.html?page=2'] # C：定义我们需要爬取的网址，没有网址蜘蛛肿么爬
 
     def parse(self, response):
         print(response)
         print("Hello,Scrapy")
+
+
