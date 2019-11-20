@@ -9,6 +9,8 @@ import scrapy
 
 
 class AaronscrapyItem(scrapy.Item):
-    # define the fields for your item here like:
+    # 定义爬取的字段
     # name = scrapy.Field()
+    name = scrapy.Field()
+    ImgUrl = scrapy.Field()
     pass
