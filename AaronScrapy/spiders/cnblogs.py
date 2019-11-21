@@ -1,40 +1,31 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from scrapy.selector import Selector
-# import sys
-# import io
+import re
+import json
+import base64
 
-# sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='gb18030')
+from scrapy.selector import Selector
+from scrapy.http import Request
+from scrapy.http.cookies import CookieJar
+
 
 # A：首先我们需要创建一个类，并继承scrapy的一个子类：scrapy.Spider  或者是其他蜘蛛类型，后面会说到，除了Spider还有很多牛X的蜘蛛类型；
 class ChoutiSpider(scrapy.Spider):
-    name = 'cnblogs' # B：然后定义一个蜘蛛名，name=“”
+    name = 'cnblogs'  # B：然后定义一个蜘蛛名，name=“”
     allowed_domains = ['cnblogs.com']
-    start_urls = ['https://www.cnblogs.com/wupeiqi/default.html?page=1'] # C：定义我们需要爬取的网址，没有网址蜘蛛肿么爬
+    start_urls = ['https://www.cnblogs.com/qiuyu666/p/11903768.html']  # C：定义我们需要爬取的网址，没有网址蜘蛛肿么爬
 
     def parse(self, response):
+        yield Request(
+            url="https://www.cnblogs.com/qiuyu666/ajax/vote/blogpost",
+            method='POST',
+            body="""isAbandoned=false&postId=11903768&voteType=Digg""",
 
-        HeaderTitle=  response.css('#Header1_HeaderTitle')[0]
-        autor= HeaderTitle.css('::text').extract_first()  #作者
-        articles = response.css('div.day')
-        for article in articles:
-            time=article.css('.dayTitle a::text').extract_first()  # 时间
-            title = article.css('.postTitle2::text').extract_first() #标题
-            fileName = '%s-随笔.txt' % autor  # 爬取的内容存入文件，文件名为：作者-随笔.txt
-            f = open(fileName, "a+")  # 追加写入文件
-            f.write(time.strip()+"            "+title.strip())  # 写入标签
-            f.write('\n')  # 换行
-        f.close()  # 关闭文件操作
-        #  < a href = "https://www.cnblogs.com/YK2012/default.html?page=20" > 下一页 < / a >
-        pages = response.css('#homepage_top_pager .pager a')
-        next_page = None
-        for page in pages:
-            if(page.css('::text').extract_first().strip()=="下一页"):
-                next_page=page.css('::attr(href)').extract_first().strip()
+            cookies={'CNZZDATA1254128672': '922290337-1574142118-https%253A%252F%252Fwww.cnblogs.com%252F%7C1574142118',
+                     '.Cnblogs.AspNetCore.Cookies': 'CfDJ8DeHXSeUWr9KtnvAGu7_dX-d2rsnpf8J9I9IQe1ONx8WSQqP6_GFPRfxDTprXd16jqTreqWRRkisDEEf_ukSAeFJ4PNNuS8CMwHTuH9nbe672ym7WHHpZCuREd5zFXkguV4iE5gUrnHV52yIgwR3ST6h3oFU3CFzq6tHepq0flaIjSyMach475GPtPrh9xWPebgmQsJ3GK1RToMitXoy4c6Y1yjmipepEzgz0cCs9sZ0Un16-tawfhZleob2YC2Quek0zgSTuvaiRlFtIlSFvHmCIEyoieEY0_qRf8oXBJ-E7p-PDRf8_Dnm9VSUutDzlSIb3IxcX9R6Inz-7o42vfhStVyOsAw8GL6NrAZo6pOGlbbjE3wB7OqChTCjloT5sqhJqCyMAaeqOQwh0PeNBLF1JJQzQhQwOI3GB7bKirSBckbGPF0USj9jYAOVssuOtSm0rg-xjuAWA-q6s3LTrkOrDAdZwrEihH891IzhlgE2uXY4Xlig79shCxJF8joPzRNVkudwXeJWq_9ryciKbZ6eIrvTbQ02xyKvZZbbGP6j',
+                     '.CNBlogsCookie': 'CA4253E8DC05AABC6DBE79F2166571EA2089BF6DEC9B73BEF8A1C2E9E462F82A316B20E3B610B1DB5B6B693DCCD9AC737DD16074326D0D0F3B8B2F61155C0F61FFFE0DEAA3EE17081FA0F9D868DDE2C42E64F633'},
+            callback=self.check_result
+        )
 
-        if next_page is not None:
-            next_page = response.urljoin(next_page)
-            yield scrapy.Request(next_page, callback=self.parse)
-
-
-
+    def check_result(self, response):
+        print(response.text)

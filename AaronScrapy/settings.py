@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'AaronScrapy.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'AaronScrapy (+http://www.yourdomain.com)'
+USER_AGENT = 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -92,3 +92,4 @@ MEDIA_ALLOW_REDIRECTS = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+COMMANDS_MODULE= "AaronScrapy.commands"

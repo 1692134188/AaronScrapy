@@ -13,4 +13,5 @@ class AaronscrapyItem(scrapy.Item):
     # name = scrapy.Field()
     name = scrapy.Field()
     ImgUrl = scrapy.Field()
+    image_paths= scrapy.Field()
     pass
